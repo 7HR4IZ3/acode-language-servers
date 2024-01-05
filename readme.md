@@ -1,6 +1,6 @@
 # Acode Language Servers
 
-Acode plugin that adds aupport for laguage servers.
+Acode plugin that adds support for language servers.
 
 
 ## Supported Features
