@@ -107,7 +107,7 @@ export class AcodeLanguageServerPlugin {
       rootUri: () => this.#getRootUri(),
       workspaceFolders: () => this.#getFolders(),
     });
-
+    
     this.$manager.registerServer("python", {
       rootUri: () => this.#getRootUri(),
       workspaceFolders: () => this.#getFolders(),
