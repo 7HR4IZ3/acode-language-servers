@@ -107,7 +107,7 @@ export class AcodeLanguageServerPlugin {
       rootUri: () => this.#getRootUri(),
       workspaceFolders: () => this.#getFolders(),
     });
-
+    
     this.$manager.registerServer("python", {
       rootUri: () => this.#getRootUri(),
       workspaceFolders: () => this.#getFolders(),
@@ -465,6 +465,7 @@ export class AcodeLanguageServerPlugin {
     ).map((service) => service.serviceInstance);
     let cursor = editor.getCursorPosition();
     let position = fromPoint(cursor);
+    let range = fromRange(editor.selection.getRange())
 
     services.map((service) => {
       if (service.connection) {
@@ -525,6 +526,7 @@ export class AcodeLanguageServerPlugin {
             console.log('Rename:', response);
             let changes = response.changes;
             for (let file in changes) {
+              console.log(file, changes[file])
               let efile = this.#openFile(file);
               this.#applyEdits(changes[file], efile.session);
             }
@@ -567,6 +569,7 @@ export class AcodeLanguageServerPlugin {
           key: "url",
           text: "Server Url",
           value: this.settings.url,
+          prompt: "Server URL ",
           promptType: "text",
         },
         {

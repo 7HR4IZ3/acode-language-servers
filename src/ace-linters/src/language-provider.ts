@@ -38,6 +38,7 @@ import { HoverTooltip } from "./ace/hover-tooltip";
 
 import { getFolderName } from "../../utils.js";
 
+
 export class LanguageProvider {
   activeEditor: Ace.Editor;
   private $signatureTooltip: SignatureTooltip;

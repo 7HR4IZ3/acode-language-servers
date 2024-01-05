@@ -9,6 +9,7 @@ export declare class LanguageClient extends BaseService implements LanguageServi
     private connection;
     private requestsQueue;
     private serverData;
+    $diagnostics: lsp.Diagnostic[];
     clientCapabilities: lsp.ClientCapabilities;
     ctx: any;
     constructor(serverData: LanguageClientConfig, ctx: any);

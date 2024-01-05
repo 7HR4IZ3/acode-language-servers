@@ -13,6 +13,7 @@ import {
 import { BaseService } from "./base-service";
 import { MessageType } from "../message-types";
 
+
 export class LanguageClient extends BaseService implements LanguageService {
   $service;
   private isConnected = false;
@@ -21,6 +22,7 @@ export class LanguageClient extends BaseService implements LanguageService {
   private connection: lsp.ProtocolConnection;
   private requestsQueue: Function[] = [];
   private serverData: LanguageClientConfig;
+  $diagnostics: lsp.Diagnostic[];
 
   clientCapabilities: lsp.ClientCapabilities = {
     textDocument: {
@@ -76,7 +78,7 @@ export class LanguageClient extends BaseService implements LanguageService {
           commitCharactersSupport: false,
           documentationFormat: ["markdown", "plaintext"],
           deprecatedSupport: true,
-          preselectSupport: false,
+          preselectSupport: false
         },
         contextSupport: false,
       },
@@ -89,6 +91,16 @@ export class LanguageClient extends BaseService implements LanguageService {
       documentHighlight: {
         dynamicRegistration: true,
       },
+      diagnostic: {
+        dynamicRegistration: true
+      },
+      publishDiagnostics: {
+        codeDescriptionSupport: true,
+        relatedInformation: true
+      },
+      inlineCompletion: {
+        dynamicRegistration: true
+      }
     },
     workspace: {
       didChangeConfiguration: {
@@ -178,9 +190,10 @@ export class LanguageClient extends BaseService implements LanguageService {
       (result: lsp.PublishDiagnosticsParams) => {
         let postMessage = {
           type: MessageType.validate,
-          sessionId: result.uri.replace(/^file:\/{2,3}/, ""),
+          sessionId: result.uri.replace(/^file:\/{2,3}/, "/"),
           value: result.diagnostics,
         };
+        this.$diagnostics = result.diagnostics;
         this.ctx.postMessage(postMessage);
       }
     );
@@ -450,7 +463,8 @@ export class LanguageClient extends BaseService implements LanguageService {
     document: lsp.TextDocumentIdentifier
   ): Promise<lsp.Diagnostic[]> {
     //TODO: textDocument/diagnostic capability
-    return [];
+    console.log("Doing validation.")
+    return this.$diagnostics;
   }
 
   async format(
