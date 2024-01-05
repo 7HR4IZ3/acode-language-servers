@@ -1,0 +1,16 @@
+{
+  "id": "acode.language.servers",
+  "name": "Acode Language Servers (Beta)",
+  "main": "main.js",
+  "version": "1.0.1",
+  "readme": "readme.md",
+  "icon": "icon.png",
+  "files": [],
+  "minVersionCode" : 290,
+  "price": 0,
+  "author": {
+    "name": "Thraize",
+    "email": "gamerxville@gmail.com",
+    "github": "http://github.com/7HR4IZ3/acode-language-servers"
+  }
+}
