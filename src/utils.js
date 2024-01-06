@@ -143,7 +143,7 @@ export function formatUrl(path) {
   }
 }
 
-export function unFormatUrl(fileUrl) {
+/*export function unFormatUrl(fileUrl) {
   if (fileUrl.startsWith("file://")) {
     let filePath = fileUrl.slice(7);
     
@@ -160,6 +160,37 @@ export function unFormatUrl(fileUrl) {
     return contentUri;
   } else {
     return fileUrl;
+  }
+}*/
+
+export function unFormatUrl(fileUrl) {
+  if(!fileUrl.startsWith("file:///")) return fileUrl;
+  // Remove the "file:///" prefix
+  let path = fileUrl.replace(/^file:\/\/\//, "");
+  if (path.startsWith("$HOME") || path.startsWith("data/data/com.termux/files/home")) {
+    let termuxPrefix =
+      "content://com.termux.documents/tree/%2Fdata%2Fdata%2Fcom.termux%2Ffiles%2Fhome::/data/data/com.termux/files/home";
+
+    // Remove $HOME or termux default home path and merge the rest
+    let termuxPath = path.startsWith("$HOME") ? path.substr("$HOME".length) : path.substr("data/data/com.termux/files/home".length);
+    return termuxPrefix + termuxPath;
+  } else if (path.startsWith("sdcard")) {
+    let sdcardPrefix =
+      "content://com.android.externalstorage.documents/tree/primary%3A";
+
+    // Extract the folder name after sdcard
+    let folderName = path
+      .substr("sdcard/".length)
+      .split("/")[0];
+    // Add the folder name and merge the rest
+    let sdcardPath =
+      sdcardPrefix +
+      folderName +
+      "::primary:" +
+      path.substr(("sdcard/").length);
+    return sdcardPath;
+  } else {
+    return fileUrl
   }
 }
 
